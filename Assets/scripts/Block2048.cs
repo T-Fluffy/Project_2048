@@ -4,11 +4,11 @@ using UnityEngine;
 using TMPro;
 using System;
 
-public class Block : MonoBehaviour
+public class Block2048 : MonoBehaviour
 {
     public int value;
-    public Node Node;
-    public Block MergingBlock;
+    public Node2048 Node;
+    public Block2048 MergingBlock;
     public bool Merging;
     public Vector2 pos => transform.position;
 
@@ -20,13 +20,13 @@ public class Block : MonoBehaviour
         _render.color = type.Color;
         _text.text = type.Value.ToString(); 
     }
-    public void SetBlock(Node node)
+    public void SetBlock(Node2048 node)
     {
         if (Node != null) Node.OccupiedBlock = null;
         Node = node;
         Node.OccupiedBlock = this;
     }
-    public void MergeBlock(Block BlockToMergeWith)
+    public void MergeBlock(Block2048 BlockToMergeWith)
     {
         // Set the Block we are Merging with
         MergingBlock = BlockToMergeWith;

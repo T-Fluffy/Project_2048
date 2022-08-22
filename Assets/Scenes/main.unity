@@ -267,6 +267,7 @@ GameObject:
   m_Component:
   - component: {fileID: 335406619}
   - component: {fileID: 335406620}
+  - component: {fileID: 335406621}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -332,6 +333,24 @@ MonoBehaviour:
   _WinCondition: 2048
   _WinScreen: {fileID: 2029518672}
   _LoseScreen: {fileID: 220801735}
+  _round: 0
+  FreeNodes: []
+  freeNodes: []
+  switcher: {fileID: 335406621}
+--- !u!114 &335406621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335406618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f10a3079ced0f946b0d7263cd8e15b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HorizontalSwipe: 0
+  VerticalSwipe: 0
 --- !u!1 &426491772
 GameObject:
   m_ObjectHideFlags: 0

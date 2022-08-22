@@ -4,23 +4,24 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
-public class GameManager : MonoBehaviour
+public class GameManager_2048 : MonoBehaviour
 {
     [SerializeField] private int _Width = 4;
     [SerializeField] private int _Height = 4;
-    [SerializeField] private Node _nodePrefab;
-    [SerializeField] private Block _BlockPrefab;
+    [SerializeField] private Node2048 _nodePrefab;
+    [SerializeField] private Block2048 _BlockPrefab;
     [SerializeField] private SpriteRenderer _BordPrefab;
     [SerializeField] private List<BlockType> _types;
     [SerializeField] private float _travelTime = 0.2f;
     [SerializeField] private int _WinCondition = 2048;
     [SerializeField] private GameObject _WinScreen, _LoseScreen;
-    private List<Node> _nodes;
-    private List<Block> _blocks;
+    private List<Node2048> _nodes;
+    private List<Block2048> _blocks;
     private GameState _state;
     public int _round;
-    public List<Node> FreeNodes;
-    public List<Node> freeNodes = null;
+    public List<Node2048> FreeNodes;
+    public List<Node2048> freeNodes = null;
+    [SerializeField]private SwipeManager2048 switcher;
     private BlockType GetBlockTypeByValue(int value) => _types.First(t => t.Value == value);
     private void Start()
     {
@@ -29,10 +30,10 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if (_state != GameState.WaitingInput) return;
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) Shift(Vector2.left);
-        if (Input.GetKeyDown(KeyCode.RightArrow)) Shift(Vector2.right);
-        if (Input.GetKeyDown(KeyCode.UpArrow)) Shift(Vector2.up);
-        if (Input.GetKeyDown(KeyCode.DownArrow)) Shift(Vector2.down);
+        if (/*Input.GetKeyDown(KeyCode.LeftArrow)*/  switcher.HorizontalSwipe<0) Shift(Vector2.left);
+        if (/*Input.GetKeyDown(KeyCode.RightArrow)*/ switcher.HorizontalSwipe>0) Shift(Vector2.right);
+        if (/*Input.GetKeyDown(KeyCode.UpArrow)*/    switcher.VerticalSwipe>0) Shift(Vector2.up);
+        if (/*Input.GetKeyDown(KeyCode.DownArrow)*/  switcher.VerticalSwipe<0) Shift(Vector2.down);
     }
     private void ChangeSatet(GameState newState)
     {
@@ -62,8 +63,8 @@ public class GameManager : MonoBehaviour
     void GenerateGrid()
     {
         _round = 0;
-        _nodes = new List<Node>();
-        _blocks = new List<Block>();
+        _nodes = new List<Node2048>();
+        _blocks = new List<Block2048>();
         for (int x=0 ; x < _Width ; x++ )
         {
             for (int y=0; y < _Height; y++)
@@ -83,7 +84,7 @@ public class GameManager : MonoBehaviour
     {
         FreeNodes = _nodes.Where(n => n.OccupiedBlocks == null).OrderBy(b => Random.value).ToList();
         freeNodes.Clear();
-        foreach (Node nodes in FreeNodes)
+        foreach (Node2048 nodes in FreeNodes)
         {
             if (nodes.OccupiedBlock==null)
             {
@@ -102,7 +103,7 @@ public class GameManager : MonoBehaviour
         }
         ChangeSatet(_blocks.Any(b=>b.value == _WinCondition)? GameState.Win:GameState.WaitingInput);
     }
-    void SpawnBlock(Node node,int value)
+    void SpawnBlock(Node2048 node,int value)
     {
         var Block = Instantiate(_BlockPrefab, node.pos, Quaternion.identity);
         Block.Init(GetBlockTypeByValue(value));
@@ -155,18 +156,18 @@ public class GameManager : MonoBehaviour
         });
         
     }
-    void MergeBlocks(Block BaseBlock,Block mergingBlock)
+    void MergeBlocks(Block2048 BaseBlock,Block2048 mergingBlock)
     {
         SpawnBlock(BaseBlock.Node, BaseBlock.value * 2);
         RemoveBlock(BaseBlock);
         RemoveBlock(mergingBlock);
     }
-    void RemoveBlock(Block block)
+    void RemoveBlock(Block2048 block)
     {
         _blocks.Remove(block);
         Destroy(block.gameObject);
     }
-    Node GetNodeAtPosition(Vector2 pos)
+    Node2048 GetNodeAtPosition(Vector2 pos)
     {
         return _nodes.FirstOrDefault(n => n.pos == pos);
     }

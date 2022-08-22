@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class ButtonActions : MonoBehaviour
+public class ButtonActions2048 : MonoBehaviour
 {
     public void StartGame()
     {
