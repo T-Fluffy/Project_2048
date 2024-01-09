@@ -12,4 +12,7 @@ public class ButtonActions2048 : MonoBehaviour
     {
         Application.Quit();
     }
+    public void LoadMenu(){
+        SceneManager.LoadScene("StartUI");
+    }
 }
